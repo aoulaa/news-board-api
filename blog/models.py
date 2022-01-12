@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -5,11 +6,18 @@ class Post(models.Model):
     title = models.CharField(max_length=150)
     link = models.URLField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-    upvote = models.PositiveIntegerField(default=0, editable=False)
     author_name = models.CharField(max_length=50)  # as a demo it's ChardField
 
     def __str__(self):
         return self.title
+
+
+class Upvote(models.Model):
+    voter = models.CharField(max_length=50)  # as a demo it's ChardField
+    post = models.ForeignKey(Post, related_name="upvote", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("voter", "post")
 
 
 class Comment(models.Model):
