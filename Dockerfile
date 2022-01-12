@@ -1,7 +1,23 @@
-FROM python:3
+FROM python:3.9-alpine3.13
 
 ENV PYTHONUNBUFFERED 1
-RUN mkdir /code
-WORKDIR /code
-COPY . /code/
-RUN pip install -r requirements.txt
+COPY requirements.txt /requirements.txt
+COPY ./appnew /appnew
+
+WORKDIR /appnew
+EXPOSE 8000
+
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache --virtual .tmp-deps \
+        build-base postgresql-dev musl-dev linux-headers && \
+    /py/bin/pip install -r /requirements.txt && \
+    apk del .tmp-deps && \
+    adduser --disabled-password --no-create-home newsapp
+
+ENV PATH="/scripts:/py/bin:$PATH"
+
+USER newsapp
+
+
