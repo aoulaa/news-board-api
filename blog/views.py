@@ -1,10 +1,10 @@
-from rest_framework.decorators import api_view
+from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from blog.models import Post
-from blog.serializer import PostSerializer, CommentSerializer
+from blog.models import Post, Upvote, Comment
+from blog.serializer import PostSerializer, CommentSerializer, UpvoteSerializer
 
 
 class PostListView(APIView):
@@ -39,14 +39,17 @@ class PostDetailView(APIView):
         return Response({}, 204)
 
 
-@api_view(['PATCH'])
-def vote_view(request, pk):
-    if pk:
-        vote = get_object_or_404(Post, pk=pk)
-        vote.upvote += 1
-        vote.save()
-        return Response("Voted")
-    return Response({}, 201)
+class Vote(APIView):
+    def post(self, request, postId, userId):
+        # userId = request.user.userID
+        current_upvote = Upvote.objects.filter(voter=userId, post=postId).first()
+        if not current_upvote:
+            new_upvote = {"voter": userId, "post": postId}
+            serializer = UpvoteSerializer(data=new_upvote)
+            if serializer.is_valid():
+                serializer.save()
+                return Response("voted", status=status.HTTP_200_OK)
+        return Response("Already upvoted", status=status.HTTP_200_OK)
 
 
 class CommentListView(APIView):
@@ -59,7 +62,7 @@ class CommentListView(APIView):
 
 class CommentDetailView(APIView):
     def get(self, request, pk):
-        comment = get_object_or_404(Post, pk=pk)
+        comment = get_object_or_404(Comment, pk=pk)
         serializer = CommentSerializer(comment)
         return Response(serializer.data)
 
