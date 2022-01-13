@@ -1,4 +1,8 @@
 # news-board-api
+To run with docker 
+
+    docker-compose build
+    docker-compose up
 
 To run without docker
 Clone repo
