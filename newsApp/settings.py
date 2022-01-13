@@ -124,7 +124,7 @@ USE_TZ = True
 
 
 CRONJOBS = [
-    ("* * * * *", "blog.utils.delete")  # every one minute
+    ("* * * * *", "newsApp.blog.utils.delete")  # every one minute
     # ('0 0 * * *', 'blog.utils.delete')  # every day at 00:00
 ]
 

@@ -1,5 +1,5 @@
 # news-board-api
-To run with docker 
+To run with docker copy *.env.example* to *.env* then run this commands
 
     docker-compose build
     docker-compose up
