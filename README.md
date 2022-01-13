@@ -7,6 +7,8 @@ Install dependencies from *requirements.txt* file:
 
     pip install -r requirements.txt
 
+copy .env.example to .env
+
 Command to create database application migrations:
 
     python manage.py makemigrations
