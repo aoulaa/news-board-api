@@ -67,13 +67,13 @@ class CommentDetailView(APIView):
         return Response(serializer.data)
 
     def put(self, request, pk):
-        comment = get_object_or_404(Post, pk=pk)
+        comment = get_object_or_404(Comment, pk=pk)
         serializer = CommentSerializer(comment, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        comment = get_object_or_404(Post, pk=pk)
+        comment = get_object_or_404(Comment, pk=pk)
         comment.delete()
         return Response({}, 204)
