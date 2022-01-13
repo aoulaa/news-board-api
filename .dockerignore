@@ -10,7 +10,7 @@ newsApp/__pycache__/
 newsApp/*/__pycache__/
 newsApp/*/*/__pycache__/
 newsApp/*/*/*/__pycache__/
-.env/
+
 .venv/
 venv/
 
