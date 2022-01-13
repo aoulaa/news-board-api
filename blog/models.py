@@ -13,7 +13,7 @@ class Post(models.Model):
 
 
 class Upvote(models.Model):
-    voter = models.CharField(max_length=50)  # as a demo it's ChardField
+    voter = models.CharField(max_length=50)
     post = models.ForeignKey(Post, related_name="upvote", on_delete=models.CASCADE)
 
     class Meta:
